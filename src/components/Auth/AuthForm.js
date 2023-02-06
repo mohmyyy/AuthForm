@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
+import AuthContext from "../store/auth-context";
 
 import classes from "./AuthForm.module.css";
 
@@ -6,8 +7,9 @@ const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const emailRef = useRef();
   const passwordRef = useRef();
-  // const [request, setRequest] = useState(false);
-  // const [button, setButton] = useState(true);
+
+  const ctx = useContext(AuthContext)
+  console.log(ctx)
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -34,11 +36,13 @@ const AuthForm = () => {
           }
         );
         const data = await response.json();
-        // console.log(data)
         if (!response.ok) {
           throw new Error(data.error.message);
         }
         console.log(data.idToken);
+        ctx.storeToken(data.idToken)
+        // ctx.logInToken(data.idToken)
+
       } catch (error) {
         console.log(error);
         alert(error)
@@ -64,18 +68,12 @@ const AuthForm = () => {
         if (!response.ok) {
           throw new Error(data.error.message);
         }
-        // console.log(data);
       } catch (error) {
         console.log(error);
         alert(error);
-        // console.log(data)
       }
     }
   };
-  // const hideButton = () => {
-  //   setButton(false);
-  //   setRequest(true);
-  // };
 
   return (
     <section className={classes.auth}>
