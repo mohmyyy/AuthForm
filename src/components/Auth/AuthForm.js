@@ -6,8 +6,8 @@ const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const emailRef = useRef();
   const passwordRef = useRef();
-  const [request, setRequest] = useState(false);
-  const [button, setButton] = useState(true);
+  // const [request, setRequest] = useState(false);
+  // const [button, setButton] = useState(true);
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -18,6 +18,31 @@ const AuthForm = () => {
     const enteredPassword = passwordRef.current.value;
     console.log(enteredEmail, enteredPassword);
     if (isLogin) {
+      try {
+        const response = await fetch(
+          "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA2RroineHJOuXSx4UjaorLmlxt6T9yyuQ",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              email: enteredEmail,
+              password: enteredPassword,
+              returnSecureToken: true,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        // console.log(data)
+        if (!response.ok) {
+          throw new Error(data.error.message);
+        }
+        console.log(data.idToken);
+      } catch (error) {
+        console.log(error);
+        alert(error)
+      }
     } else {
       try {
         const response = await fetch(
@@ -35,22 +60,22 @@ const AuthForm = () => {
           }
         );
         const data = await response.json();
-        
+
         if (!response.ok) {
           throw new Error(data.error.message);
         }
         // console.log(data);
       } catch (error) {
         console.log(error);
-        alert(error)
+        alert(error);
         // console.log(data)
       }
     }
   };
-  const hideButton = () => {
-    setButton(false)
-    setRequest(true)
-  }
+  // const hideButton = () => {
+  //   setButton(false);
+  //   setRequest(true);
+  // };
 
   return (
     <section className={classes.auth}>
@@ -65,8 +90,11 @@ const AuthForm = () => {
           <input ref={passwordRef} type="password" id="password" required />
         </div>
         <div className={classes.actions}>
-          {button && <button onClick={hideButton}>{isLogin ? "Login" : "Create Account"}</button>}
-          {request && <p>Sending Request...</p>}
+          <button >
+            {isLogin ? "Login" : "Create Account"}
+          </button>
+
+          {/* {request && <p>Sending Request...</p>} */}
           <button
             type="button"
             className={classes.toggle}
