@@ -1,18 +1,24 @@
 import { useState } from "react";
 import AuthContext from "./auth-context";
 
+
 const ContextProvider = (props) => {
-  const [token, setToken] = useState(null);
+  const userLoginDetails = localStorage.getItem('logIn')
+  const [token, setToken] = useState(userLoginDetails);
 
   const userIsLoggedIn = !!token
 
   const storeTokenHandler = (token) => {
     setToken(token);
+    localStorage.setItem('logIn',token)
   };
 
   const removeTokenHandler = () => {
     setToken(null);
+    localStorage.removeItem('logIn')
   };
+
+
 
   const cartObject = {
     token: token,

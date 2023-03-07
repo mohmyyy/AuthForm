@@ -44,22 +44,21 @@ const AuthForm = () => {
       });
       setIsLooding(false);
       const data = await response.json();
-      ctx.login(data.idToken);
-      history.replace('/')
-
-      if (response.ok) {
-        console.log(response.json());
-        return response.json();
-      } else {
+      console.log(response.ok)
+      if (!response.ok) {
+        // console.log(response.json());
+        // return response;
         throw new Error(data.error.message);
       }
+      else{
+        ctx.login(data.idToken);
+        history.replace('/')
+      }
+      
     } catch (error) {
       console.log(error);
       alert(error);
     }
-  };
-  const loginHandler = () => {
-    // navigate("/UserProfile")
   };
 
   return (
@@ -76,7 +75,7 @@ const AuthForm = () => {
         </div>
         <div className={classes.actions}>
           {!isLooding && (
-            <button onClick={loginHandler}>
+            <button>
               {isLogin ? "Login" : "Create Account"}
             </button>
           )}
