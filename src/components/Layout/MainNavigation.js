@@ -7,7 +7,8 @@ import classes from './MainNavigation.module.css';
 
 const MainNavigation = () => {
   const ctx = useContext(AuthContext)
-  const toShow =  ctx.logInToken.length===0
+  console.log(ctx)
+  const toShow =  ctx.isLoggedIn
   console.log(toShow)
   return (
     <header className={classes.header}>
@@ -16,14 +17,14 @@ const MainNavigation = () => {
       </Link>
       <nav>
         <ul>
-          { toShow && <li>
+          { !toShow && <li>
             <Link to='/auth'>Login</Link>
           </li>}
-          { !toShow && <li>
+          { toShow && <li>
             <Link to='/profile'>Profile</Link>
           </li>}
-          { !toShow && <li>
-            <button onClick={ctx.removeToken}>Logout</button>
+          { toShow && <li>
+            <button onClick={ctx.logout}>Logout</button>
           </li>}
         </ul>
       </nav>

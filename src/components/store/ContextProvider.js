@@ -2,24 +2,24 @@ import { useState } from "react";
 import AuthContext from "./auth-context";
 
 const ContextProvider = (props) => {
-  const [loginToken, setLoginToken] = useState("");
+  const [token, setToken] = useState(null);
 
-  const storeTokenHandler = (idToken) => {
-    setLoginToken(() => {
-      return idToken;
-    });
+  const userIsLoggedIn = !!token
+
+  const storeTokenHandler = (token) => {
+    setToken(token);
   };
 
   const removeTokenHandler = () => {
-    setLoginToken(() => "");
+    setToken(null);
   };
 
   const cartObject = {
-    logInToken: loginToken,
-    storeToken: storeTokenHandler,
-    removeToken: removeTokenHandler,
+    token: token,
+    isLoggedIn:userIsLoggedIn,
+    login: storeTokenHandler,
+    logout: removeTokenHandler,
   };
-  console.log(cartObject.logInToken);
 
   return (
     <AuthContext.Provider value={cartObject}>
