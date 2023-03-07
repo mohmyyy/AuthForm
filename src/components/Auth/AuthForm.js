@@ -45,7 +45,7 @@ const AuthForm = () => {
       setIsLooding(false);
       const data = await response.json();
       ctx.login(data.idToken);
-      // history.replace('/')
+      history.replace('/')
 
       if (response.ok) {
         console.log(response.json());
