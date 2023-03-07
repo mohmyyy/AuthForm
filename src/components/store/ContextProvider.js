@@ -18,7 +18,9 @@ const ContextProvider = (props) => {
     localStorage.removeItem('logIn')
   };
 
-
+    setTimeout(()=>{
+      localStorage.removeItem('logIn')
+    },300000)
 
   const cartObject = {
     token: token,
